@@ -10,22 +10,32 @@
 
 <header>
 <h1>Zomato Dynamic 🍽</h1>
-<p>Restaurants loaded from server</p>
+<p>Add new restaurants dynamically</p>
 </header>
+
+<div class="form">
+<input id="name" placeholder="Restaurant name">
+<input id="cuisine" placeholder="Cuisine">
+<input id="rating" placeholder="Rating">
+<button onclick="addRestaurant()">Add</button>
+</div>
 
 <div class="container" id="restaurantList"></div>
 
 <script>
+
+function loadRestaurants(){
 
 fetch("/api/restaurants")
 .then(res=>res.json())
 .then(data=>{
 
 let container = document.getElementById("restaurantList");
+container.innerHTML="";
 
 data.forEach(r=>{
 
-let card = document.createElement("div");
+let card=document.createElement("div");
 card.className="card";
 
 card.innerHTML=`
@@ -39,6 +49,25 @@ container.appendChild(card);
 });
 
 });
+
+}
+
+function addRestaurant(){
+
+let name=document.getElementById("name").value;
+let cuisine=document.getElementById("cuisine").value;
+let rating=document.getElementById("rating").value;
+
+fetch("/api/restaurants",{
+method:"POST",
+headers:{ "Content-Type":"application/json"},
+body:JSON.stringify({name,cuisine,rating})
+})
+.then(()=>loadRestaurants());
+
+}
+
+loadRestaurants();
 
 </script>
 
