@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Zomato Dynamic</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<header>
+<h1>Zomato Dynamic 🍽</h1>
+<p>Restaurants loaded from server</p>
+</header>
+
+<div class="container" id="restaurantList"></div>
+
+<script>
+
+fetch("/api/restaurants")
+.then(res=>res.json())
+.then(data=>{
+
+let container = document.getElementById("restaurantList");
+
+data.forEach(r=>{
+
+let card = document.createElement("div");
+card.className="card";
+
+card.innerHTML=`
+<h2>${r.name}</h2>
+<p>Cuisine: ${r.cuisine}</p>
+<p class="rating">Rating ⭐ ${r.rating}</p>
+`;
+
+container.appendChild(card);
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
